@@ -5,9 +5,9 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import javax.swing.BoxLayout;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
+//import com.jgoodies.forms.layout.FormLayout;
+//import com.jgoodies.forms.layout.ColumnSpec;
+//import com.jgoodies.forms.layout.RowSpec;
 import javax.swing.JTextPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
@@ -199,7 +199,10 @@ public class Wireframe {
 		panel.add(menuBar);
 		
 		JMenu mnFile = new JMenu("File");
+        JMenu mnHelp = new JMenu("Help");
+
 		menuBar.add(mnFile);
+        menuBar.add(mnHelp);
 		
 		JMenuItem mntmSave = new JMenuItem("Save Query");
 		mntmSave.addActionListener(new ActionListener()
@@ -210,6 +213,15 @@ public class Wireframe {
 			}
 		});
 		mnFile.add(mntmSave);
+
+        JMenuItem mntmIndex = new JMenuItem("Index");
+        mntmIndex.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+            }
+        });
+        mnHelp.add(mntmIndex);
 	}
 	private static void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
