@@ -213,6 +213,15 @@ public class Wireframe {
 			}
 		});
 		mnFile.add(mntmSave);
+    
+        JMenuItem mntmExport = new JMenuItem("Export");
+        mntmExport.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+            }
+        });
+        mnFile.add(mntmExport);
 
         JMenuItem mntmIndex = new JMenuItem("Index");
         mntmIndex.addActionListener(new ActionListener()
