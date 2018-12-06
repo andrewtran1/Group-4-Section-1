@@ -84,6 +84,8 @@ public class Wireframe {
 		tabbedPane.setBounds(31, 73, 940, 580);
 		panel.add(tabbedPane);
 		
+		// SEARCH DOC TAB
+		
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab("Search for Documents", null, panel_1, null);
 		panel_1.setLayout(null);
@@ -117,6 +119,8 @@ public class Wireframe {
 		TextArea textArea = new TextArea();
 		textArea.setBounds(15, 293, 900, 224);
 		panel_1.add(textArea);
+		
+		// LOAD DOC TAB
 		
 		JPanel panel_2 = new JPanel();
 		tabbedPane.addTab("Load Documents", null, panel_2, null);
@@ -185,6 +189,9 @@ public class Wireframe {
 		panel_2.add(textField_4);
 		textField_4.setColumns(10);
 		
+		
+		//SUMArIZE DOC TAB
+		
 		JPanel panel_3 = new JPanel();
 		tabbedPane.addTab("Summarize Document", null, panel_3, null);
 		panel_3.setLayout(null);
@@ -193,6 +200,21 @@ public class Wireframe {
 		textField_5.setBounds(31, 33, 873, 461);
 		panel_3.add(textField_5);
 		textField_5.setColumns(10);
+		
+		//Delete Button
+		JButton btnDelete = new JButton("Delete");
+		btnDelete.setBounds(801, 500, 114, 47);
+		panel_3.add(btnDelete);
+		btnDelete.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				textField_5.setText("No files were selected");
+			}
+		});
+		
+			
+		// MENU BAR CODE
 		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBounds(0, 0, 1002, 59);
