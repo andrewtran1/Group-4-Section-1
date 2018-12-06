@@ -225,6 +225,7 @@ public class Wireframe {
         JMenu mnOptions = new JMenu("Options");
         
 		menuBar.add(mnFile);
+		menuBar.add(mnOptions);
         menuBar.add(mnHelp);
         menuBar.add(mnOptions);
         
@@ -267,6 +268,15 @@ public class Wireframe {
 			}
 		});
 		mnFile.add(mntmExit);
+		
+		JMenuItem mntmSources = new JMenuItem("Sources");
+		mntmSources.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+			}
+		});
+		mnOptions.add(mntmSources);
 
         JMenuItem mntmIndex = new JMenuItem("Index");
         mntmIndex.addActionListener(new ActionListener()
