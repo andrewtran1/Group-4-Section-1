@@ -1,5 +1,6 @@
 import java.awt.EventQueue;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
@@ -83,6 +84,11 @@ public class Wireframe {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(31, 73, 940, 580);
 		panel.add(tabbedPane);
+		
+		// Set icon
+		ImageIcon icon = new ImageIcon("res/transparentX.png");
+		frmPirex.setIconImage(icon.getImage());
+
 		
 		// SEARCH DOC TAB
 		
@@ -286,6 +292,15 @@ public class Wireframe {
             }
         });
         mnHelp.add(mntmIndex);
+        
+        JMenuItem mntmAbout = new JMenuItem("About");
+        mntmAbout.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+            }
+        });
+        mnHelp.add(mntmAbout);
         
         JMenuItem mntmDocuments = new JMenuItem("Documents");
         mntmDocuments.addActionListener(new ActionListener()
