@@ -105,7 +105,7 @@ public class Wireframe {
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				textField_1.setText(null);
+				//textField_1.setText(null);
 			}
 		});
 		btnClear.setBounds(801, 35, 114, 47);
@@ -222,21 +222,32 @@ public class Wireframe {
 		
 		JMenu mnFile = new JMenu("File");
         JMenu mnHelp = new JMenu("Help");
+        JMenu mnOptions = new JMenu("Options");
         
 		menuBar.add(mnFile);
         menuBar.add(mnHelp);
+        menuBar.add(mnOptions);
+        
+        JMenuItem mntmLoad = new JMenuItem("Load Query");
+        mntmLoad.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+            }
+        });
+        mnFile.add(mntmLoad);
 		
 		JMenuItem mntmSave = new JMenuItem("Save Query");
 		mntmSave.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				SavedQuery query = new SavedQuery(textField_1.getText());
+				//SavedQuery query = new SavedQuery(textField_1.getText());
 			}
 		});
 		mnFile.add(mntmSave);
 		
-
+		
     
         JMenuItem mntmExport = new JMenuItem("Export");
         mntmExport.addActionListener(new ActionListener()
@@ -265,7 +276,18 @@ public class Wireframe {
             }
         });
         mnHelp.add(mntmIndex);
+        
+        JMenuItem mntmDocuments = new JMenuItem("Documents");
+        mntmDocuments.addActionListener(new ActionListener()
+        {
+        	 public void actionPerformed(ActionEvent e)
+             {
+             }
+        });
+        mnOptions.add(mntmDocuments);
 	}
+	
+	
 	private static void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
