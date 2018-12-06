@@ -224,6 +224,7 @@ public class Wireframe {
         JMenu mnHelp = new JMenu("Help");
         
 		menuBar.add(mnFile);
+		menuBar.add(mnOptions);
         menuBar.add(mnHelp);
 		
 		JMenuItem mntmSave = new JMenuItem("Save Query");
@@ -256,6 +257,15 @@ public class Wireframe {
 			}
 		});
 		mnFile.add(mntmExit);
+		
+		JMenuItem mntmSources = new JMenuItem("Sources");
+		mntmSources.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+			}
+		});
+		mnOptions.add(mntmSources);
 
         JMenuItem mntmIndex = new JMenuItem("Index");
         mntmIndex.addActionListener(new ActionListener()
