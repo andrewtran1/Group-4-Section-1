@@ -200,7 +200,7 @@ public class Wireframe {
 		
 		JMenu mnFile = new JMenu("File");
         JMenu mnHelp = new JMenu("Help");
-
+        
 		menuBar.add(mnFile);
         menuBar.add(mnHelp);
 		
@@ -213,6 +213,8 @@ public class Wireframe {
 			}
 		});
 		mnFile.add(mntmSave);
+		
+
     
         JMenuItem mntmExport = new JMenuItem("Export");
         mntmExport.addActionListener(new ActionListener()
@@ -222,6 +224,16 @@ public class Wireframe {
             }
         });
         mnFile.add(mntmExport);
+        
+		JMenuItem mntmExit = new JMenuItem("Exit");
+		mntmExit.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				System.exit(0);		//Closes when clicking File>>Exit
+			}
+		});
+		mnFile.add(mntmExit);
 
         JMenuItem mntmIndex = new JMenuItem("Index");
         mntmIndex.addActionListener(new ActionListener()
