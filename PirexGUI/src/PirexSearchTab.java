@@ -25,16 +25,24 @@ import java.util.List;
  *                              Andrew Tran, Sergio Zavala
  */
 public class PirexSearchTab extends JPanel {
+    //Component padding constants
     private static final int I_BORDER = 10;
     private static final int O_BORDER = 20;
 
-    private final JComponent queryLabel           = new JLabel("Query:");
-    private final JTextField queryTextField       = new JTextField();
-    private final JButton    queryClearButton     = new JButton("Clear");
-    private final JList      searchResultList     = new JList(); 
-    private final JComponent searchResultCount    = new JPanel(new BorderLayout());
-    private final JTextArea  selectedDocumentText = new JTextArea();
+    //Components to be wrapped in a JContainer
+    private final JList       i_searchResultList     = new JList(); 
+    private final JLabel      i_searchResultCount    = new JLabel(" "); 
+    private final JTextArea   i_selectedDocumentText = new JTextArea(""); 
 
+    //Search tab components
+    private final JLabel      queryLabel           = new JLabel("Query:");
+    private final JTextField  queryTextField       = new JTextField();
+    private final JButton     queryClearButton     = new JButton("Clear");
+    private final JScrollPane searchResultList     = new JScrollPane(i_searchResultList); 
+    private final JPanel      searchResultCount    = new JPanel(new BorderLayout());
+    private final JScrollPane selectedDocumentText = new JScrollPane(i_selectedDocumentText);
+
+    //Search tab component constraints for GridBagLayout
     private final GridBagConstraints cQueryLabel           = new GridBagConstraints();
     private final GridBagConstraints cQueryTextField       = new GridBagConstraints();
     private final GridBagConstraints cQueryClear           = new GridBagConstraints();
@@ -46,7 +54,6 @@ public class PirexSearchTab extends JPanel {
         Arrays.asList(queryLabel, queryTextField, queryClearButton,
                       searchResultList, searchResultCount,
                       selectedDocumentText);
-
     private final List<GridBagConstraints> constraints = 
         Arrays.asList(cQueryLabel, cQueryTextField, cQueryClear,
                       cSearchResultList, cSearchResultCount,
@@ -65,9 +72,13 @@ public class PirexSearchTab extends JPanel {
      * Setup component behavior and action listeners.
      */
     private void setupComponentBehavior() {
-        JComponent searchResultCountText = new JLabel(" ");
-        this.searchResultCount.add(searchResultCountText, BorderLayout.WEST);
-        //this.selectedDocumentText.setEditable(false);
+        i_selectedDocumentText.setEditable(false);
+        i_selectedDocumentText.setLineWrap(true);
+        i_selectedDocumentText.setWrapStyleWord(true);
+        selectedDocumentText.setVerticalScrollBarPolicy(
+            JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        this.searchResultCount.add(i_searchResultCount, BorderLayout.WEST);
 
         this.queryClearButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -77,6 +88,7 @@ public class PirexSearchTab extends JPanel {
 
         this.queryTextField.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                toSearchResultsState(queryTextField.getText());
             } 
         });
     }
@@ -87,8 +99,34 @@ public class PirexSearchTab extends JPanel {
         JLabel searchResultCountLabel = (JLabel) (this.searchResultCount
                                                       .getComponents()[0]);
         searchResultCountLabel.setText(" ");
-        this.selectedDocumentText.setText("");
+        this.i_selectedDocumentText.setText("");
+        this.i_searchResultList.setListData(new String[0]);
     }
+
+    private void toSearchResultsState(String query) {
+        //SAMPLE DATA FOR TESTING PURPOSES -------------
+        String[] resultsList = new String[] {
+            resultString("Charles Dickens", "Bleak House", 276, "I knew he meant well in"), 
+            resultString("Charles Dickens", "Bleak House", 519, "It was one of those"),
+            resultString("Charles Dickens", "Bleak House", 635, "There may be some motions"), 
+            resultString("Charles Dickens", "Bleak House", 769, "They attend matins with"), 
+            resultString("Charles Dickens", "Bleak House", 947, "This proper name, so used"), 
+            resultString("Charles Dickens", "Bleak House", 954, "The red bit, the black") 
+        };
+        this.i_selectedDocumentText.setText("I knew he meant well in paying me this compliment, so I laughed at myself for blushing at it when he had shut the door and got upon the box; and we all three laughed and chatted about our inexperience and the strangeness of London until we turned up under an archway to our destination—a narrow street of high houses like an oblong cistern to hold the fog. There was a confused little crowd of people, principally children, gathered about the house at which we stopped, which had a tarnished brass plate on the door with the inscription JELLYBY.");
+        //SAMPLE DATA FOR TESTING PURPOSES -------------
+
+        this.i_searchResultList.setListData(resultsList);
+        this.i_searchResultCount.setText(String.format(
+            "Retrieved %d documents from query \"%s\"", resultsList.length, query
+        ));
+    }
+
+    private static String resultString(String author, String title, int docNumber, String shortenedText) {
+        return String.format("%s  %s  %4d  %s", author, title, docNumber, shortenedText);
+    }
+
+
 
     /**
      * Add and layout components onto the "Search for Documents" tab.
