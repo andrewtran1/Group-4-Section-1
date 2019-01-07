@@ -1,7 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
-import java.util.List;
+import java.awt.event.*;
+import javax.swing.border.EmptyBorder;
+import java.io.File;
 
 /**
  * "Load Documents" tab layout.
@@ -10,113 +11,122 @@ import java.util.List;
  *								Thuyvy Nguyen, Roberto Ochoa-Sanchez, 
  *								Andrew Tran, Sergio Zavala
  */
-public class PirexLoadTab extends JPanel {
+public class PirexLoadTab extends JPanel implements ActionListener {
 	private static final int I_PADDING = PirexTabbedPane.I_PADDING;
 	private static final int O_PADDING = PirexTabbedPane.O_PADDING;;
+	private static final String[] fileTypes = new String[]{"Project Gutenberg File"};
 	
-	private final JLabel     fileLabel         = new JLabel("Text File:"); 
-	private final JTextField fileTextField     = new JTextField();
-	private final JButton	 fileBrowseButton  = new JButton("Browse");
+	private final JFileChooser fileChooser = new JFileChooser();
 
-	private final JLabel     fileTypeLabel     = new JLabel("Text File Type:");
-	private final JComboBox  fileTypeComboBox  = new JComboBox();
+	private final JLabel     fileLabel        = new JLabel("Text File:"); 
+	private final JTextField fileTextField    = new JTextField();
+	private final JButton	 fileBrowseButton = new JButton("Browse");
 
-	private final JLabel     titleLabel        = new JLabel("Title:"); 
-	private final JTextField titleTextField    = new JTextField();
-	private final JLabel     authorLabel       = new JLabel("Author:"); 
-	private final JTextField authorTextField   = new JTextField();
+	private final JLabel     fileTypeLabel    = new JLabel("Text File Type:");
+	private final JComboBox  fileTypeComboBox = new JComboBox(fileTypes);
 
-	private final JSeparator separator         = new JSeparator();
-	private final JButton    i_processButton   = new JButton("Process");
-	private final JTextArea  i_summaryTextArea = new JTextArea("");
+	private final JLabel     titleLabel       = new JLabel("Title:"); 
+	private final JTextField titleTextField   = new JTextField();
+	private final JLabel     authorLabel      = new JLabel("Author:"); 
+	private final JTextField authorTextField  = new JTextField();
 
+	private final JPanel separator = Pirex.borderLayoutWrap(null, null, new JSeparator(), null, null);
 
-	private final JPanel      filePanel        = new JPanel(new GridBagLayout());
-	private final JPanel      fileTypePanel    = new JPanel(new GridBagLayout());
-	private final JPanel 	  titleAuthorPanel = new JPanel(new GridBagLayout());
-	private final JPanel      processButton    = new JPanel(new BorderLayout());
-	private final JScrollPane summaryTextArea  = new JScrollPane(i_summaryTextArea);
+	private final JButton    processButton    = new JButton("Process");
+	private final JTextArea  summaryTextArea  = new JTextArea("");
+	private final JScrollPane summaryScrollPanel = new JScrollPane(summaryTextArea);
 
-	private final JPanel      loadTabPanel     = new JPanel(new GridBagLayout());
-
-	private GridBagConstraints 
-		cFileLabel, cFileTextField, cFileBrowseButton, 
-		cFileTypeLabel, cFileTypeComboBox, 
-		cTitleLabel, cTitleTextField, cAuthorLabel, cAuthorTextField,
-		cSeparator,
-		cProcessButton,
-		cSummaryTextArea,
-		cFilePanel, cFileTypePanel, cTitleAuthorPanel,
-		cLoadTabPanel;
+	private GridBagConstraints cTitleField, cAuthorField;
 
 	public PirexLoadTab() {
 		this.setupLayout();
+		this.setupComponentBehavior();
 	} 
-
-	private void setupComponentBehavior() {
-	}
 
     /**
      * Add and layout components onto the "Load Documents" tab.
      */
     private void setupLayout() {
-        this.setLayout(new GridBagLayout());
-        this.setComponentConstraints();
+        this.setLayout(new BorderLayout());
+		this.setupConstraints();
 
-		this.add(loadTabPanel, cLoadTabPanel);
+		JPanel titleAuthorFields = new JPanel(new GridBagLayout());
+		titleAuthorFields.add(Pirex.inputField(titleLabel, titleTextField, null),   cTitleField);
+		titleAuthorFields.add(Pirex.inputField(authorLabel, authorTextField, null), cAuthorField);
 
-		loadTabPanel.add(filePanel,        cFilePanel);
-		loadTabPanel.add(fileTypePanel,    cFileTypePanel);
-		loadTabPanel.add(titleAuthorPanel, cTitleAuthorPanel);
-		loadTabPanel.add(separator,        cSeparator);
-		loadTabPanel.add(processButton,    cProcessButton);
-		loadTabPanel.add(summaryTextArea,  cSummaryTextArea);
+		JPanel inputFields = new JPanel(new GridLayout(3, 0));
+		inputFields.add(Pirex.inputField(fileLabel, fileTextField, fileBrowseButton));
+		inputFields.add(Pirex.inputField(fileTypeLabel, fileTypeComboBox, null));
+		inputFields.add(titleAuthorFields);
+		inputFields = Pirex.borderLayoutWrap(null, null, inputFields, null, separator);
 
-		filePanel.add(fileLabel,        cFileLabel);
-		filePanel.add(fileTextField,    cFileTextField);
-		filePanel.add(fileBrowseButton, cFileBrowseButton);
-		
-		fileTypePanel.add(fileTypeLabel,    cFileTypeLabel);
-		fileTypePanel.add(fileTypeComboBox, cFileTypeComboBox);
+		JPanel leftAlignedProcessButton = Pirex.leftAlign(processButton);
+		JPanel processPanel = Pirex.borderLayoutWrap(leftAlignedProcessButton, null, summaryScrollPanel, null, null);
+		JPanel loadTabPanel = Pirex.borderLayoutWrap(inputFields, null, processPanel, null, null);
 
-		titleAuthorPanel.add(titleLabel,      cTitleLabel);
-		titleAuthorPanel.add(titleTextField,  cTitleTextField);
-		titleAuthorPanel.add(authorLabel,     cAuthorLabel);
-		titleAuthorPanel.add(authorTextField, cAuthorTextField);
+		this.add(Pirex.withBorder(loadTabPanel), BorderLayout.CENTER);
 
-		processButton.add(i_processButton, BorderLayout.WEST);
     }
 
-    /**
-     * Set all of the GridBagConstraints layout options
-     * for each component in the "Load Documents" tab.
-     */
-    private void setComponentConstraints() {
-		cLoadTabPanel = PirexTabbedPane.outerPanelConstraints();
+	/**
+	 * Set GridBagConstraints and Borders for
+	 * components.
+	 */
+	private void setupConstraints() {
+		cTitleField = new GridBagConstraints();
+		cTitleField.fill = GridBagConstraints.HORIZONTAL;
+		cTitleField.weightx = 0.6;
 
-		cFilePanel              = PirexTabbedPane.rowConstraints(0);
-		cFileTypePanel          = PirexTabbedPane.rowConstraints(1); 
-		cTitleAuthorPanel       = PirexTabbedPane.rowConstraints(2); 
-		cSeparator              = PirexTabbedPane.rowConstraints(3);
-        cSeparator.insets       = new Insets(I_PADDING, 0, 2 * I_PADDING, 0);
-		cProcessButton          = PirexTabbedPane.rowConstraints(4);
-		cSummaryTextArea        = PirexTabbedPane.bothFill();
-		cSummaryTextArea.gridy  = 5;
+		cAuthorField = (GridBagConstraints) cTitleField.clone();
+		cAuthorField.insets = new Insets(0, 2 * I_PADDING, 0, 0);
+		cAuthorField.weightx = 1 - cTitleField.weightx;
 
-		cFileLabel            = PirexTabbedPane.labelConstraints();
-		cFileTextField        = PirexTabbedPane.horizontalFill();
-        cFileTextField.insets = new Insets(0, 0, 0, I_PADDING);
-		cFileBrowseButton     = new GridBagConstraints();
-
-		cFileTypeLabel    = PirexTabbedPane.labelConstraints(); 
-		cFileTypeComboBox = PirexTabbedPane.horizontalFill();
-
-		cTitleLabel             = PirexTabbedPane.labelConstraints(); 
-		cTitleTextField         = PirexTabbedPane.fieldConstraints();
-        cTitleTextField.weightx = 0.6;
-
-		cAuthorLabel             = PirexTabbedPane.labelConstraints(); 
-		cAuthorTextField         = PirexTabbedPane.horizontalFill();
-        cAuthorTextField.weightx = 1 - cTitleTextField.weightx;
+		separator.setBorder(new EmptyBorder(0, 0, 2 * I_PADDING, 0));
 	}
-}
+
+	
+    /**
+     * Setup component behavior and action listeners.
+     */
+	private void setupComponentBehavior() {
+		fileTextField.setEditable(false);
+		processButton.setEnabled(false);
+
+        summaryTextArea.setEditable(false);
+        summaryTextArea.setLineWrap(true);
+        summaryTextArea.setWrapStyleWord(true);
+
+		fileBrowseButton.addActionListener(this);
+		processButton.addActionListener(this);
+	}
+
+	private void toBlankLoadState() {
+		processButton.setEnabled(false);
+		fileTextField.setText("");
+		titleTextField.setText("");
+		authorTextField.setText("");
+	}
+
+	private void toLoadFileSelectedState() {
+		processButton.setEnabled(true);
+	}
+
+	private void toLoadSummaryState() {
+		this.toBlankLoadState();
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == fileBrowseButton) {
+			int returnVal = fileChooser.showOpenDialog(this);
+
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				File file = fileChooser.getSelectedFile();
+				fileTextField.setText(file.getPath());
+				this.toLoadFileSelectedState();
+			}
+		}
+		else if (e.getSource() == processButton) {
+			this.toLoadSummaryState();
+		}
+	}
+}	

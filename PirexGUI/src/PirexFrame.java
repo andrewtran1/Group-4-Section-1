@@ -1,9 +1,6 @@
-import java.awt.Container;
-import java.awt.Insets;
+import java.awt.*;
 
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JFrame;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 public class PirexFrame extends JFrame {
